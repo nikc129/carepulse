@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
-import { FormFieldType } from './PatientForm';
+import { FormFieldType } from './forms/PatientForm';
 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
@@ -69,6 +69,8 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                 />
             </FormControl>
         )
+    
+    
       default:
       return null;
   }
