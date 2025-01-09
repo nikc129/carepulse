@@ -49,7 +49,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           )}
           <Input
             {...field}
-            value={field.value || ''} // Prevent controlled/uncontrolled error
+            value={field.value || ''} 
             placeholder={placeholder}
             className="shad-input border-0"
           />

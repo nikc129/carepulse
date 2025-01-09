@@ -1,10 +1,13 @@
 import { z } from "zod";
-const UserFormValidation = z.object({
-    name: z.string().min(2, {
-    message: "must be 2 characters or more" })
-    .max(50,  "must be 50 characters or less"),
-    email: z.string().email("Invalid email address"),
-    phone: z.string().refine((phone) => /^\d{10,15}$/.test(phone), 'invalid phone number'),
-  
+
+export const UserFormValidation = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be at most 50 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z
+    .string()
+    .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
 });
 export default UserFormValidation;

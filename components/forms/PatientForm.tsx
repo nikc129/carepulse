@@ -12,6 +12,7 @@ import CustomFormField from "@/components/CustomFormField";
 import SubmitButton from "@/components/SubmitButton";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createUser } from "@/lib/actions/patient.actions";
 export enum FormFieldType {
   INPUT = "input",
   TEXTAREA = "textarea",
@@ -42,9 +43,14 @@ const PatientForm = () => {
   const onSubmit = async ({name,email,phone}: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
     try{
-    //  const userData= {name,email,phone};
-    //  const user =await createUser(userData);
-    //  if(user) router.push(`/patient/${user.$id}/register`);
+     const userData= {name,email,phone};
+     const user =await createUser(userData);
+     console.log("done`1")
+     if(user){
+       router.push(`/patient/${user.$id}/register`);
+     console.log("done`2")
+    }
+    console.log("done`3")
     } catch (error) {
       console.log(error)
     }
@@ -83,7 +89,7 @@ const PatientForm = () => {
           control={form.control}
           fieldType={FormFieldType.PHONE_INPUT}
           name="phone"
-          label="phone nu,ber"
+          label="phone number"
           placeholder="(123) 456-7890"
         
         
