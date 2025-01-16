@@ -30,8 +30,6 @@ const NEXT_PUBLIC_ENDPOINT= `https://cloud.appwrite.io/v1`
 
 export const createUser = async (user: CreateUserParams) => {
   try {
-
-   
     // Validate user input
     if (!user.email || !user.email.includes("@")) {
       throw new Error(`Invalid email: ${user.email}`);
@@ -42,7 +40,7 @@ export const createUser = async (user: CreateUserParams) => {
     }
 
     // Create new user
-    console.log("Generated unique ID:", ID.unique());
+    //console.log("Generated unique ID:", ID.unique());
 
     const newUser = await users.create(
       ID.unique(),
@@ -51,7 +49,7 @@ export const createUser = async (user: CreateUserParams) => {
       undefined, // Optional password
       user.name || undefined // Optional name
     );
-    console.log("New user created:", newUser);
+    //console.log("New user created:", newUser);
 
     return parseStringify(newUser);
   } catch (error: any) {
@@ -71,3 +69,13 @@ export const createUser = async (user: CreateUserParams) => {
     throw error; // Re-throw to propagate the error
   }
 };
+
+export const getUser=async (userid:string)=>{
+  try{
+    const user=await users.get(userid);
+
+    return parseStringify(user);
+  }catch(error){
+    console.log(error)
+  }
+}
