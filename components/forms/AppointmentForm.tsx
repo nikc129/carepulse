@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import {UserFormValidation }from "@/lib/validation";
+import { getAppointmentSchema}from "@/lib/validation";
 import {
   Form
 } from "@/components/ui/form";
@@ -17,10 +17,10 @@ import { FormFieldType } from "./PatientForm";
 import Image from "next/image";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
+import { createAppointment } from "@/lib/actions/appointment.actions";
 
 
 // Define the form schema
-
 
 const AppointmentForm = ({
     userId,
@@ -33,34 +33,65 @@ const AppointmentForm = ({
     type: "create" | "schedule" | "cancel";
     
   }) => {
+
+   const AppointmentFormValidation=getAppointmentSchema(type);
+
   const router = useRouter();
   // Initialize useForm with zodResolver
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+  const form = useForm<z.infer<typeof AppointmentFormValidation>>({
+    resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
+      primaryPhysician:"",
+      schedule:new Date(),
+      reason:"",
+      note:"",
+      cancellationReason:"",
+
     },
   });
 
   // Define the submit handler
-  const onSubmit = async ({name,email,phone}: z.infer<typeof UserFormValidation>) => {
+  const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
     setIsLoading(true);
-    try{
-     const userData= {name,email,phone};
-     const user =await createUser(userData);
-     console.log("done`1")
-     if(user){
-       router.push(`/patient/${user.$id}/register`);
-     console.log("done`2")
+    let status;
+    switch (type) {
+      case "schedule":
+        status = "scheduled";
+        break;
+      case "cancel":
+        status = "cancelled";
+        break;
+      default:
+        status = "pending";
     }
-    console.log("done`3")
+
+    try{
+        if (type === "create" && patientId) {
+            const appointment = {
+              userId,
+              patient: patientId,
+              primaryPhysician: values.primaryPhysician,
+              schedule: new Date(values.schedule),
+              reason: values.reason!,
+              status: status as Status,
+              note: values.note,
+            };
+            const newAppointment=await createAppointment(appointment)                     
+
+            if (newAppointment) {
+              form.reset();
+              router.push(
+                `/patients/${userId}/new-appointment/success?appointmentId=${newAppointment.$id}`
+              );
+            }
+        } 
+        
     } catch (error) {
       console.log(error)
     }
   };
+
   let buttonLabel;
   switch (type) {
     case "cancel":
@@ -129,7 +160,7 @@ const AppointmentForm = ({
                 fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="note"
-                label="Comments/notes"
+                label="Comments/note"
                 placeholder="Prefer afternoon appointments, if possible"
                 disabled={type === "schedule"}
               />
