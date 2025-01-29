@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import PatientForm from "@/components/forms/PatientForm";
 import Link from "next/link";
+import PasskeyModal from "@/components/PasskeyModal";
 export const{
   PROJECT_ID,
   API_KEY_SECRET,
@@ -13,12 +14,12 @@ export const{
   NEXT_PUBLIC_ENDPOINT,
 }=process.env;
 
-export default function Home() {
+export default function Home({ searchParams }: { searchParams: { admin?: string } }) {
+  const isAdmin = searchParams?.admin === "true"; 
+
   return (
     <div className="flex h-screen max-h-screen">
-      {/** TODO:
-       *  otp verification
-       */}
+      {isAdmin && <PasskeyModal/> }
       <section className="remove-scrollbar container my-auto">
         
         <div className="sub-container max-w-[496px]">
