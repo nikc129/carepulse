@@ -90,8 +90,7 @@ const PatientForm = () => {
           fieldType={FormFieldType.PHONE_INPUT}
           name="phone"
           label="phone number"
-          placeholder="(123) 456-7890"      
-        
+          placeholder="(123) 456-7890"           
 
         />
         <SubmitButton isLoading={isLoading} >Get Started</SubmitButton>
