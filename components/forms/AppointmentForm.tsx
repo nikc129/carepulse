@@ -17,7 +17,8 @@ import { FormFieldType } from "./PatientForm";
 import Image from "next/image";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
-import { createAppointment } from "@/lib/actions/appointment.actions";
+import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
+import { Appointment } from "@/types/appwrite.types";
 
 
 // Define the form schema
@@ -25,12 +26,17 @@ import { createAppointment } from "@/lib/actions/appointment.actions";
 const AppointmentForm = ({
     userId,
     patientId,
-    type = "create"
+    type ,
+    appointment,
+    setOpen
     
   }: {
     userId: string;
     patientId: string;
     type: "create" | "schedule" | "cancel";
+    appointment?:Appointment;
+    setOpen:(open:boolean)=>void;
+    
     
   }) => {
 
@@ -42,11 +48,11 @@ const AppointmentForm = ({
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician:"",
-      schedule:new Date(),
-      reason:"",
-      note:"",
-      cancellationReason:"",
+      primaryPhysician: appointment ? appointment.primaryPhysician : '',
+      schedule:appointment ? appointment.schedule:new Date(),
+      reason:appointment ?appointment.reason :"",
+      note:appointment ?appointment.note :"",
+      cancellationReason:appointment ?appointment.cancellationReason :"",
 
     },
   });
@@ -86,6 +92,27 @@ const AppointmentForm = ({
               );
             }
         } 
+        else {
+          const appointmentToUpdate={
+            userId,
+            appointmentId:appointment?.$id!,
+            appointment:{
+              primaryPhysician:values?.primaryPhysician,
+              schedule:new Date(values?.schedule),
+              status: status as Status,
+              cancellationReason: values?.cancellationReason
+            },
+            type
+          }
+          const updatedAppointment=await updateAppointment(appointmentToUpdate)
+          if(updatedAppointment){
+            setOpen && setOpen(false);
+            form.reset();
+          }
+
+        
+        }
+
         
     } catch (error) {
       console.log(error)
@@ -103,13 +130,14 @@ const AppointmentForm = ({
     default:
       buttonLabel = "Submit Apppointment";
   }
+  console.log({type})
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
-      <section className="mb-12 space-y-4">
+     {type==="create" && <section className="mb-12 space-y-4">
           <h1 className="header">New Appointment</h1>
           <p className="text-dark-700">Request a new appointment in 10 seconds</p>
-        </section>
+        </section>}
         {type !== "cancel" && (
           <>
             <CustomFormField
@@ -153,7 +181,7 @@ const AppointmentForm = ({
                 name="reason"
                 label="Appointment reason"
                 placeholder="Annual montly check-up"
-                disabled={type === "schedule"}
+                
               />
 
               <CustomFormField
@@ -162,7 +190,7 @@ const AppointmentForm = ({
                 name="note"
                 label="Comments/note"
                 placeholder="Prefer afternoon appointments, if possible"
-                disabled={type === "schedule"}
+               // disabled={type === "schedule"}
               />
             </div>
           </>
