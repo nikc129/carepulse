@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Patient Management System
 
-## Getting Started
+## 📌 Introduction
+This is a **Patient Management System** built using **Next.js**, **TypeScript**, **TailwindCSS**, and **Twilio**. The system allows patients to register, book, and manage their appointments with doctors while providing admins with tools to manage scheduling, confirmations, and cancellations. The application also supports **SMS notifications** for appointment confirmations.
 
-First, run the development server:
+## 🚀 Tech Stack
+- **Next.js** – Framework for React applications
+- **TypeScript** – Type safety and better developer experience
+- **TailwindCSS** – Modern utility-first CSS framework
+- **Twilio** – SMS notifications for appointment confirmations
+- **Appwrite** – Backend-as-a-service for authentication, database, and file storage
+- **ShadCN** – Beautiful and accessible UI components
+- **Sentry** – Performance monitoring and error tracking
 
-```bash
+## 🔥 Features
+- ✅ **User Authentication**: Patients can register and log in securely.
+- ✅ **Book Appointments**: Patients can schedule appointments with doctors.
+- ✅ **Admin Dashboard**: Manage and track all appointments efficiently.
+- ✅ **Confirm & Schedule Appointments**: Admins can approve and set appointment times.
+- ✅ **Cancel Appointments**: Admins can cancel appointments if necessary.
+- ✅ **SMS Notifications**: Patients receive SMS confirmations via **Twilio**.
+- ✅ **Fully Responsive**: Works seamlessly across all devices.
+- ✅ **File Upload with Appwrite**: Secure file storage for documents.
+- ✅ **Performance Monitoring**: Integrated **Sentry** for tracking application performance.
+
+## ⚡ Quick Start
+### Prerequisites
+Ensure you have the following installed:
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/)
+- npm or yarn
+
+### Installation
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/nikc129/carepulse.git
+   cd carepulse
+   ```
+2. **Install Dependencies**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
+
+### 🔑 Environment Variables
+Create a `.env.local` file in the root directory and add:
+```env
+# APPWRITE
+NEXT_PUBLIC_ENDPOINT=https://cloud.appwrite.io/v1
+PROJECT_ID=
+API_KEY=
+DATABASE_ID=
+PATIENT_COLLECTION_ID=
+APPOINTMENT_COLLECTION_ID=
+NEXT_PUBLIC_BUCKET_ID=
+NEXT_PUBLIC_ADMIN_PASSKEY=123456
+```
+Replace the placeholders with your actual **Appwrite credentials**.
+
+### 🏃 Run the Project
+```sh
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+Visit **[http://localhost:3000](http://localhost:3000)** in your browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🤝 Contribution
+Feel free to fork the repo and submit PRs. Suggestions and improvements are welcome!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📜 License
+This project is licensed under the MIT License.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+Built with ❤️ using **Next.js, TypeScript & Twilio**
